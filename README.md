@@ -1,20 +1,16 @@
-# Building
+# Superseded
 
-```
-$ mvn package
-```
-# Assumptions
+Don't use this filter. It has been folded into the IdP as of commit `81ef13f4d508a941641c5fc496e36756b949a02f`.
 
-1. You're proxying from Apache to Jetty on the same server, or on a secured network, and nothing other than Apache can reach your backend.
+# Configuring IdP
 
-# Installing
+The filter has been merged into mainline IdP, but still needs to be configured.
 
-1. Put the resuing `apache-proxy-x509-filter-0.1.0-SNAPSHOT.jar` in `edit-webapp/WEB-INF/lib/`.
-2. Edit your `web.xml` to apply the filter to `/authn/X509`:
+1. Edit your `web.xml` to apply the filter to `/authn/X509`:
 ```xml
 <filter>
-    <filter-name>ApacheProxyCert</filter-name>
-    <filter-class>edu.iu.globalnoc.idp.filter.proxyx509.ProxyX509Filter</filter-class>
+    <filter-name>X509ProxyFilter</filter-name>
+    <filter-class>net.shibboleth.idp.authn.impl.X509ProxyFilter</filter-class>
     <!-- Proxied header name for the leaf certificate -->
     <init-param>
         <param-name>leafHeader</param-name>
@@ -27,12 +23,12 @@ $ mvn package
     </init-param>
 </filter>
     <filter-mapping>
-        <filter-name>ApacheProxyCert</filter-name>
+        <filter-name>X509ProxyFilter</filter-name>
         <url-pattern>/Authn/X509</url-pattern>
     </filter-mapping>
 ```
-3. Rebuild.
-4. Restart.
+2. Rebuild your IdP WAR.
+3. Restart your IdP process.
 
 # Configure Apache
 
